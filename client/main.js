@@ -7,7 +7,7 @@ $(document).ready(function () {
     
     $.ajax({
       type: 'POST',
-      url: 'https://lyric-writer.onrender.com',
+      url: 'https://lyric-writer.onrender.com/api/completions',
       data: {
         prompt: prompt,
         temperature: temperature,
