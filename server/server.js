@@ -2,9 +2,10 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { Configuration, OpenAIApi } from 'openai';
-import fs from 'fs';
 
 dotenv.config();
+
+console.log(process.env.OPENAI_API_KEY)
 
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY, 
@@ -23,11 +24,12 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.use(express.json());
 
 app.get('/', async (req, res) => {
     res.status(200).send({
-        message:'Its working',
+        message:'Its working asshole',
     })
 });
 
@@ -46,28 +48,11 @@ app.post('/', async (req, res) => {
         frequency_penalty: 0.2,
         presence_penalty: 0
 
-      });
+      })
 
       res.status(200).send({
         result: response.data.choices[0].text
-      });
-
-      const user_id = 'user_id'; // replace this with the actual user id
-      const client_name = 'AdminLyric'; // replace this with the actual client name
-      const client_content = response.data.choices[0].text;
-      const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-      const userFolder = `./my-content/${user_id}`;
-      if (!fs.existsSync(userFolder)) {
-        fs.mkdirSync(userFolder);
-      }
-
-      const fileName = `${userFolder}/${client_name}-${created_at}.txt`;
-      fs.writeFile(fileName, client_content, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
+      })
     } catch (error) {
         res.status(400).send({
             error: error.message
