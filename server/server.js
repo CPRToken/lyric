@@ -48,19 +48,24 @@ app.post('/', async (req, res) => {
       frequency_penalty: 0.2,
       presence_penalty: 0,
     });
-
-    const generatedText = response.data.choices[0].text;
-
-    // Write the generated text to a file named "generated_text.txt"
-    fs.appendFile(`Your_Lyrics_${Date.now()}.txt`, generatedText, (err) => {
-      if (err) {
-        console.log('Error appending to file: ', err);
-        throw err;
-      } else {
-        console.log('The file has been updated! Generated text:', generatedText);
-      }
-    });
     
+    
+const path = require('path');
+
+const documentRoot = '/home/online2/public_html/lyricwriter.ai';
+const lyricsDirname = 'lyrics';
+
+const lyricsDirPath = path.join(documentRoot, lyricsDirname);
+
+fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generatedText, (err) => {
+  if (err) {
+    console.log('Error appending to file: ', err);
+    throw err;
+  } else {
+    console.log('The file has been updated! Generated text:', generatedText);
+  }
+});
+
 
   
   
