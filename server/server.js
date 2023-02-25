@@ -44,17 +44,18 @@ app.post('/', async (req, res) => {
     });
     
  const generatedText = response.data.choices[0].text;    
+const fileName = `your_lyrics_${Date.now()}.docx`;
 
  
 
- 
-const fs = require('fs');
 
-fs.appendFile(`your_lyrics_${Date.now()}.docx`, generatedText, (err) => {
+fs.appendFile(fileName, generatedText, (err) => {
   if (err) {
-    console.log('Error appending to file: ', err);
+    console.log('Error writing file:', err);
     throw err;
-  } else {
+  
+  
+     } else {
     console.log('The file has been updated! Generated text:', generatedText);
   }
 });
