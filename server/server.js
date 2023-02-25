@@ -50,7 +50,7 @@ app.post('/', async (req, res) => {
  
 const fs = require('fs');
 
-fs.appendFile(`generated_text_${Date.now()}.docx`, generatedText, (err) => {
+fs.appendFile(`your_lyrics_${Date.now()}.docx`, generatedText, (err) => {
   if (err) {
     console.log('Error appending to file: ', err);
     throw err;
