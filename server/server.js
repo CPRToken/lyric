@@ -57,6 +57,11 @@ const lyricsDirname = 'lyrics';
 
 const lyricsDirPath = path.join(documentRoot, lyricsDirname);
 
+if (!fs.existsSync(lyricsDirPath)) {
+  fs.mkdirSync(lyricsDirPath);
+}
+
+
 fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generatedText, (err) => {
   if (err) {
     console.log('Error appending to file: ', err);
