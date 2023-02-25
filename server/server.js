@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Its working HOORAY!',
+    message: 'Its working assholes!',
   });
 });
 
@@ -48,7 +48,9 @@ app.post('/', async (req, res) => {
  
 
  
- fs.appendFile('Your_Lyrics.txt', generatedText, (err) => {
+const fs = require('fs');
+
+fs.appendFile(`generated_text_${Date.now()}.txt`, generatedText, (err) => {
   if (err) {
     console.log('Error appending to file: ', err);
     throw err;
@@ -56,6 +58,7 @@ app.post('/', async (req, res) => {
     console.log('The file has been updated! Generated text:', generatedText);
   }
 });
+
 
  
 
