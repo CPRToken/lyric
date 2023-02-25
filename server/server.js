@@ -26,7 +26,6 @@ const transporter = nodemailer.createTransport({
 
 
 
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -53,34 +52,48 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     });
     
- const generatedText = response.data.choices[0].text;    
-const path = require('path');
+    const generatedText = response.data.choices[0].text;
+    
+    const path = require('path');
+    const documentRoot = '/home/online2/public_html/lyricwriter.ai/wp-content/uploads/2023/02/';
+    const lyricsDirname = 'lyrics';
+    const lyricsDirPath = path.join(documentRoot, lyricsDirname);
 
-const documentRoot = '/home/online2/public_html/lyricwriter.ai/wp-content/uploads/2023/02/';
-const lyricsDirname = 'lyrics';
+    if (!fs.existsSync(lyricsDirPath)) {
+      fs.mkdirSync(lyricsDirPath);
+    }
 
-const lyricsDirPath = path.join(documentRoot, lyricsDirname);
+    console.log('Lyrics directory path:', lyricsDirPath);
 
-if (!fs.existsSync(lyricsDirPath)) {
-  fs.mkdirSync(lyricsDirPath);
-}
-
-console.log('Lyrics directory path:', lyricsDirPath);
-
-fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generatedText, (err) => {
-  if (err) {
-    console.log('Error appending to file: ', err);
-    throw err;
-  } else {
-    console.log('The file has been updated! Generated text:', generatedText);
-  }
-});
-
-  
-  
-  
-  
-   
+    const filename = `Your_Lyrics_${Date.now()}.txt`;
+    const filepath = path.join(lyricsDirPath, filename);
+    fs.appendFile(filepath, generatedText, (err) => {
+      if (err) {
+        console.log('Error appending to file: ', err);
+        throw err;
+      } else {
+        console.log('The file has been updated! Generated text:', generatedText);
+        const mailOptions = {
+          from: process.env.EMAIL_USERNAME,
+          to: 'jayroosydney@gmail.com',
+          subject: `Your Lyric ${Date.now()}`,
+          text: `Here is your lyric: ${link}`,
+          attachments: [
+            {
+              filename: filename,
+              path: filepath,
+            },
+          ],
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.log('Error sending email:', error);
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        });
+      }
+    });
 
     res.status(200).send({
       result: generatedText,
