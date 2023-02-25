@@ -14,7 +14,7 @@ export async function insertText(filePath) {
   
     try {
       const text = await fs.promises.readFile(filePath, 'utf-8');
-      await connection.query('INSERT INTO tupac (songs) VALUES (?)', [text]);
+      await connection.query('INSERT INTO tupac (lyrics) VALUES (?)', [text]);
     } finally {
       connection.release();
     }
