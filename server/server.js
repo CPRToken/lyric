@@ -52,7 +52,7 @@ app.post('/', async (req, res) => {
     
 const path = require('path');
 
-const documentRoot = '/home/online2/public_html/lyricwriter.ai';
+const documentRoot = '/home/online2/public_html/lyricwriter.ai/wp-content/uploads/2023/02/';
 const lyricsDirname = 'lyrics';
 
 const lyricsDirPath = path.join(documentRoot, lyricsDirname);
@@ -65,6 +65,8 @@ fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generat
     console.log('The file has been updated! Generated text:', generatedText);
   }
 });
+
+
 
 
   
