@@ -54,6 +54,7 @@ if (!fs.existsSync(lyricsDirPath)) {
   fs.mkdirSync(lyricsDirPath);
 }
 
+console.log('Lyrics directory path:', lyricsDirPath);
 
 fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generatedText, (err) => {
   if (err) {
