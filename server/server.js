@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
-import nodemailer from 'nodemailer';
+
 
 dotenv.config();
 
