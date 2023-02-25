@@ -16,13 +16,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 
-const transporter = nodemailer.createTransport({
-  service: 'mail.lyricwriter.ai',
-  auth: {
-    user: process.env.EMAIL_USERNAME,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
 
 
 
@@ -73,25 +66,7 @@ app.post('/', async (req, res) => {
         throw err;
       } else {
         console.log('The file has been updated! Generated text:', generatedText);
-        const mailOptions = {
-          from: process.env.EMAIL_USERNAME,
-          to: 'jayroosydney@gmail.com',
-          subject: `Your Lyric ${Date.now()}`,
-          text: `Here is your lyric: ${link}`,
-          attachments: [
-            {
-              filename: filename,
-              path: filepath,
-            },
-          ],
-        };
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log('Error sending email:', error);
-          } else {
-            console.log('Email sent:', info.response);
-          }
-        });
+        
       }
     });
 
