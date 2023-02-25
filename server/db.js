@@ -4,9 +4,9 @@ import fs from 'fs';
 
 const pool = mysql.createPool({
   host: '192.67.255.218',
-  user: 'onlines2_jay',
+  user: 'onlines2_mike',
   password: 'Ll@ves196214',
-  database: 'onlines2_content',
+  database: 'onlines2_test',
 });
 
 export async function insertText(filePath) {
