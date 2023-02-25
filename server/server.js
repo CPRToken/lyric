@@ -14,13 +14,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const transporter = nodemailer.createTransport({
-  service: 'mail.lyricwriter.ai',
-  auth: {
-    user: 'process.env.EMAIL_USERNAME',
-    pass: 'process.env.EMAIL_PASSWORD',
-  },
-});
+
 
 const app = express();
 app.use(cors());
@@ -72,28 +66,13 @@ fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generat
 
 
 
-
   
   
   
   
   
   
-    const mailOptions = {
-      from: process.env.EMAIL_USERNAME,
-      to: 'orders@lyricwriter.ai',
-      subject: 'New Generated Text',
-      text: generatedText,
-    };
-
-    // Send email with generated text as content
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+   
 
     res.status(200).send({
       result: generatedText,
