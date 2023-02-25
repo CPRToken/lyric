@@ -9,14 +9,14 @@ const pool = mysql.createPool({
   database: 'onlines2_test',
 });
 
-export async function insertText(filePath) {
-    const connection = await pool.getConnection();
+xport async function insertText(filePath) {
+  const connection = await pool.getConnection();
   
-    try {
-      const text = await fs.promises.readFile(filePath, 'utf-8');
+  try {
+    const text = await fs.promises.readFile(filePath, 'utf-8');
+    const name = `your_lyrics_${Date.now()}.docx`;
     await connection.query('INSERT INTO songs (name, content) VALUES (?, ?)', [name, text]);
-
-    } finally {
-      connection.release();
-    }
+  } finally {
+    connection.release();
   }
+}
