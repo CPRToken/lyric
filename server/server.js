@@ -42,7 +42,7 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     });
     
-    
+ const generatedText = response.data.choices[0].text;    
 const path = require('path');
 
 const documentRoot = '/home/online2/public_html/lyricwriter.ai/wp-content/uploads/2023/02/';
