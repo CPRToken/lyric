@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { Configuration, OpenAIApi } from 'openai';
 import fs from 'fs';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -13,6 +14,16 @@ const configuration = new Configuration({
 });
 
 const openai = new OpenAIApi(configuration);
+
+
+const transporter = nodemailer.createTransport({
+  service: 'mail.lyricwriter.ai',
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
 
 
 
@@ -65,10 +76,6 @@ fs.appendFile(path.join(lyricsDirPath, `Your_Lyrics_${Date.now()}.txt`), generat
   }
 });
 
-
-
-  
-  
   
   
   
