@@ -17,15 +17,13 @@ const openai = new OpenAIApi(configuration);
 
 
 
-
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Its working',
+    message: 'Its working HOORAY!',
   });
 });
 
@@ -45,30 +43,25 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     });
     
-    const generatedText = response.data.choices[0].text;
-    
-    const path = require('path');
-    const documentRoot = '/home/online2/public_html/lyricwriter.ai/wp-content/uploads/2023/02/';
-    const lyricsDirname = 'lyrics';
-    const lyricsDirPath = path.join(documentRoot, lyricsDirname);
+ const generatedText = response.data.choices[0].text;    
 
-    if (!fs.existsSync(lyricsDirPath)) {
-      fs.mkdirSync(lyricsDirPath);
-    }
+ 
 
-    console.log('Lyrics directory path:', lyricsDirPath);
+ 
+ fs.appendFile('Your_Lyrics.txt', generatedText, (err) => {
+  if (err) {
+    console.log('Error appending to file: ', err);
+    throw err;
+  } else {
+    console.log('The file has been updated! Generated text:', generatedText);
+  }
+});
 
-    const filename = `Your_Lyrics_${Date.now()}.txt`;
-    const filepath = path.join(lyricsDirPath, filename);
-    fs.appendFile(filepath, generatedText, (err) => {
-      if (err) {
-        console.log('Error appending to file: ', err);
-        throw err;
-      } else {
-        console.log('The file has been updated! Generated text:', generatedText);
-        
-      }
-    });
+ 
+
+
+      
+   
 
     res.status(200).send({
       result: generatedText,
