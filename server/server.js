@@ -15,7 +15,8 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-
+const https = require('https');
+const qs = require('querystring');
 
 const app = express();
 app.use(cors());
@@ -23,7 +24,7 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Its working assholes!',
+    message: 'Its working POST!',
   });
 });
 
@@ -43,38 +44,41 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     });
     
- const generatedText = response.data.choices[0].text;    
-const fileName = `your_lyrics_${Date.now()}.docx`;
-
- 
-
-
-fs.appendFile(fileName, generatedText, (err) => {
-  if (err) {
-    console.log('Error writing file:', err);
-    throw err;
-  
-  
-     } else {
-    console.log('The file has been updated! Generated text:', generatedText);
-  }
-});
-
-
- 
-
-
-      
-   
-
-    res.status(200).send({
-      result: generatedText,
+    
+    
+    
+  const postData = qs.stringify({
+      'title': response.data.choices[0].text,
     });
+
+    const options = {
+      hostname: 'lyricwriter.ai',
+      path: '/newpost.php',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': postData.length,
+      },
+    };
+
+    const postReq = https.request(options, (postRes) => {
+      postRes.on('data', (chunk) => {
+        console.log(`Response: ${chunk}`);
+      });
+    });
+
+    postReq.on('error', (error) => {
+      console.error(error);
+    });
+
+    postReq.write(postData);
+    postReq.end();
+
+    res.status(200).send({ message: 'Success' });
   } catch (error) {
-    res.status(400).send({
-      error: error.message,
-    });
+    res.status(400).send({ error: error.message });
   }
 });
+
 
 app.listen(5000, () => console.log('server is running on port http://localhost:5000'));
