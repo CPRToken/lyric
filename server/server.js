@@ -2,12 +2,12 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { Configuration, OpenAIApi } from 'openai';
-import fs from 'fs';
-
+import https from 'https';
+import qs from 'querystring';
 
 dotenv.config();
 
-console.log(process.env.OPENAI_API_KEY)
+console.log(process.env.OPENAI_API_KEY);
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -15,16 +15,13 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const https = require('https');
-const qs = require('querystring');
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'Its working POST!',
+    message: 'It is working!',
   });
 });
 
@@ -35,7 +32,7 @@ app.post('/', async (req, res) => {
     const max_tokens = req.body.max_tokens || 100;
 
     const response = await openai.createCompletion({
-      model: 'text-davinci-003',
+      model: 'text-davinci-002',
       prompt: prompt,
       temperature: parseFloat(temperature),
       max_tokens: parseInt(max_tokens),
@@ -43,17 +40,14 @@ app.post('/', async (req, res) => {
       frequency_penalty: 0.2,
       presence_penalty: 0,
     });
-    
-    
-    
-    
-  const postData = qs.stringify({
-      'title': response.data.choices[0].text,
+
+    const postData = qs.stringify({
+      title: response.data.choices[0].text,
     });
 
     const options = {
-      hostname: 'lyricwriter.ai',
-      path: '/wp-content/themes/generatepress-child/newpost.php',
+      hostname: 'lyricwriter.ai', // Replace with your WordPress site URL
+      path: '/wp-content/themes/generatepress-child/apipost.php', // Replace with the path to the second PHP script on your server
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,7 +55,18 @@ app.post('/', async (req, res) => {
       },
     };
 
-  
+    const postReq = https.request(options, (postRes) => {
+      postRes.on('data', (chunk) => {
+        console.log(`Response: ${chunk}`);
+      });
+    });
+
+    postReq.on('error', (error) => {
+      console.error(error);
+    });
+
+    postReq.write(postData);
+    postReq.end();
 
     res.status(200).send({ message: 'Success' });
   } catch (error) {
@@ -69,5 +74,4 @@ app.post('/', async (req, res) => {
   }
 });
 
-
-app.listen(5000, () => console.log('server is running on port http://localhost:5000'));
+app.listen(5000, () => console.log('Server is running on port http://localhost:5000'));
