@@ -62,9 +62,7 @@ app.post('/', async (req, res) => {
     };
 
     const postReq = https.request(options, (postRes) => {
-      postRes.on('data', (chunk) => {
-        console.log(`Response: ${chunk}`);
-      });
+    
     });
 
     postReq.on('error', (error) => {
