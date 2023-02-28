@@ -41,9 +41,7 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     });
 
-    const postData = qs.stringify({
-      title: response.data.choices[0].text,
-    });
+    
 
     const options = {
       hostname: 'lyricwriter.ai', // Replace with your WordPress site URL
