@@ -53,7 +53,7 @@ app.post('/', async (req, res) => {
 
     const options = {
       hostname: 'lyricwriter.ai',
-      path: '/newpost.php',
+      path: '/wp-content/themes/generatepress-child/newpost.php',
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
