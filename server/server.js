@@ -55,18 +55,7 @@ app.post('/', async (req, res) => {
       },
     };
 
-    const postReq = https.request(options, (postRes) => {
-      postRes.on('data', (chunk) => {
-        console.log(`Response: ${chunk}`);
-      });
-    });
-
-    postReq.on('error', (error) => {
-      console.error(error);
-    });
-
-    postReq.write(postData);
-    postReq.end();
+   
 
     res.status(200).send({ message: 'Success' });
   } catch (error) {
