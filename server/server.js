@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
   res.status(200).send({
-    message: 'It is working!',
+    message: 'Its working and ur on LW',
   });
 });
 
